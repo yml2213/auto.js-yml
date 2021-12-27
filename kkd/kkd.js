@@ -19,9 +19,42 @@ ui.layout(
     <frame height="30" gravity="center">
         <text text="请👇点击下方开始" size="11" gravity="center" bg="#d3d7d4" color="#ff0000" />
     </frame>
-    <button id="start" text="开始运行快看点-bingo" style="Widget.AppCompat.Button.Colored" textSize="30sp" />
+        <button id="start" text="开始运行快看点-bingo" style="Widget.AppCompat.Button.Colored" textSize="30sp" />
+        
+
+    <text text="=============温馨提示=============" size="20sp" color="#000000" />   //提示
+
+    <text text="1. 如果遇到卡住不懂请手动下拉刷新下,对auto.js限制严格!" size="20sp" color="#000000" />  
+    <text text="2. 长按音量键可快速关闭脚本!!" size="20sp" color="#000000" />     
+    <text text="2. 有任何问题可以blog留言或直接加群交流!!" size="20sp" color="#000000" />
+
+
+    <horizontal>
+    <button id="click_me" marginLeft="60" text="开源地址" style="Widget.AppCompat.Button.Colored" w="auto"/>
+    <button id="click_me1" marginLeft="60" text="blog地址" style="Widget.AppCompat.Button.Colored" w="auto" />
+    </horizontal>
+    
 </vertical>
 );
+
+ui.click_me.on("click", ()=>{
+    app.openUrl("https://github.com/yml2213/auto.js-yml");
+    toast("我被点啦");
+});
+
+ui.click_me.on("long_click", ()=>{
+    toast("不要闹了!");
+});
+ui.click_me1.on("click", ()=>{
+    app.openUrl("https://menglei.xyz/");
+    toast("我被点啦");
+});
+
+ui.click_me1.on("long_click", ()=>{
+    toast("不要闹了!");
+});
+
+
 
 ui.autoService.on("check", function (checked) {
     // 用户勾选无障碍服务的选项时，跳转到页面让用户去开启
