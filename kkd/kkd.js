@@ -9,16 +9,17 @@ ui.layout(
     <Switch id="autoService" text="无障碍服务" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="20sp" />
     <Switch id="overlayService" text="悬浮窗权限" checked="{{auto.service != null}}" padding="8 8 8 8" textSize="20sp" />
     
-    <text text="👇设置获取次数运行完停止" size="15" bg="#d3d7d4" color="#ff0000" />   //分割用
-    
-    <horizontal >
-    <input id="cs11" textSize="20sp" hint="请输入观看视频次数" inputType="number" text=""/>                  
-    </horizontal>
-  
+    <text text="👇请输入每条观看时间,建议8000-12000 毫秒(8-12秒)👇" size="15" bg="#d3d7d4" color="#ff0000" />   //分割用
+    <input id="yanchi" inputType="number" text="10000" />  
+        
+
+    <text text="👇请输看资讯数量👇" size="15" bg="#d3d7d4" color="#ff0000" />   //分割用
+    <input id="shuliang" inputType="number" hint="没有建议 看自己" text="" />  
+
     <frame height="30" gravity="center">
         <text text="请👇点击下方开始" size="11" gravity="center" bg="#d3d7d4" color="#ff0000" />
     </frame>
-    <button id="start" text="开始刷视频-bingo" style="Widget.AppCompat.Button.Colored" textSize="30sp" />
+    <button id="start" text="开始运行快看点-bingo" style="Widget.AppCompat.Button.Colored" textSize="30sp" />
 </vertical>
 );
 
@@ -64,72 +65,62 @@ ui.start.on("click", function () {
         return;
     }
     
-    ksksp();
+    kkd();
 });
 
 
-function ksksp() {
+function kkd() {
     
 
     threads.start(function () {
         "auto";
+        // toast(shuliang)
         var i = 0;
-        var yanchi = ui.yanchi.getText();
-        var cs11 = ui.cs11.getText();
+        var shuliang = ui.shuliang.getText();
+        var yanchi = ui.yanchi.getText();  //定义每条 资讯 延迟
         sleep(1000);
-        toast("【设置获取】：" + cs11 + "次")
-
-        // toast(cs11)
-        console.show()      //显示悬浮窗显示日志（需要先打开悬浮窗权限）
-        app.launch("com.kuaishou.nebula")       //打开快手极速版
-        sleep(10000)        //等待应用打开
-        console.log("准备就绪！")
-        toast("ready!")
+        toast("【你设置观看资讯】：" + shuliang + "次")
+        
+        console.show();      //显示悬浮窗显示日志（需要先打开悬浮窗权限）
+        app.launch("com.yuncheapp.android.pearl");       //打开快看点
+        sleep(5000);        //等待应用打开  5s
+        console.log("准备就绪！");
+        toast("ready!");
         //console.log(device.width/2)
 
-        /*核心部分开始*/
-        for (var i = 0; i < cs11; ++i) {
-            nextVideo(device.width / 2, device.height * (8 / 9), device.width / 2, device.height * (1 / 4), 150)
-            u = i + 1
-            console.log("总任务量：" + cs11 + ";已完成：" + u)
-            /*随机回看 */
-            j = random(1, 30)
-            if (j == 1) {
-                lookBack()
+        for (var i = 0; i < shuliang; i++) {
+            
+            if (i%3==0) {
+                while (!click("首页"));
+                sleep(4000);        //等待 4 秒
+                while (!click("首页"));
+                sleep(4000);        //等待 4 秒
+                id("root").className("android.widget.LinearLayout").desc("TYPE_KEY_NORMAL_IMAGE").findOne().click();   //点击第一条资讯
+                sleep(1000);
+                toast("阅读成功");
+                sleep(yanchi);
+                id("back").findOne().click();  //点击左上角返回
+                sleep(2000);
+                u = i + 1;
+                console.log("总任务量：" + shuliang + ";已完成：" + u);
+
+            } else {
+                while (!click("首页"));
+                sleep(4000);        //等待 4 秒
+                id("root").className("android.widget.LinearLayout").desc("TYPE_KEY_NORMAL_IMAGE").findOne().click();   //点击第一条资讯
+                sleep(1000);
+                toast("阅读成功");
+                sleep(yanchi);
+                id("back").findOne().click();  //点击左上角返回
+                sleep(2000);
+                u = i + 1;
+                console.log("总任务量：" + shuliang + ";已完成：" + u);
+            
             }
-
-        }
-        /*核心部分结束 */
-        /*退出程序 */
-        console.hide()
-        exits();            //退出js脚本
-        home();             //回到首页
-        /**--------------- */
-
-        function nextVideo(x1, y1, x2, y2, duration) {
-            swipe(x1, y1, x2, y2, duration)
-            delayTime = random(8000, 12000)
-            sleep(delayTime)        //在视频停留8-12秒
-        }
-
-        /*随机往回滑动 */
-        function lookBack() {
-            let back = random(1, 20)
-            if (back == 1) {
-                console.log("开始往回看一个视频")
-                swipe(device.width / 2, device.height * (1 / 4), device.width / 2, device.height * (8 / 9), 150)
-                sleep(random(10000, 15000))
-
-            }
-        }
-
-        /*向下滑动两个 在向回滑动之后执行 */
-        function nextTwo() {
-            swipe(device.width / 2, device.height * (8 / 9), device.width / 2, device.height * (1 / 4), 150)
-            swipe(device.width / 2, device.height * (8 / 9), device.width / 2, device.height * (1 / 4), 150)
-            sleep(random(10000, 15000))
         }
 
     })
 
 }
+
+
